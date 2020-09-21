@@ -13,6 +13,17 @@ class Calculator(QMainWindow):
         self.centralwidget = QWidget()
         self.setCentralWidget(self.centralwidget)
         self.mainLayout = QVBoxLayout()
+        self.centralwidget.setLayout(self.mainLayout)
+        # create the display line
+        self._createDisplay()
+
+    def _createDisplay(self):
+        """This method creates the calculator display line where the user can
+        see the numbers, operations and results"""
+        self.display = QLineEdit()
+        self.display.setFixedHeight(35)
+        self.display.setReadOnly(True)
+        self.mainLayout.addWidget(self.display)
 
 
 def main():

@@ -97,6 +97,14 @@ class Calculator(QMainWindow):
         """This method clears the display when somebody presses the 'C' Button"""
         self.display.setText('')
 
+    def evaluateExpression(self):
+        display_text = self.display.text()
+        try:
+            result = eval(display_text, {}, {})
+            self.display.setText(str(result))
+        except:
+            self.display.setText("ERROR")
+
 
 class Controller:
     def __init__(self, window):
@@ -104,6 +112,9 @@ class Controller:
         self.connectSignals()
 
     def buildingText(self, button_text):
+        if self._window.getDisplayText() == "ERROR":
+            self._window.clearDisplay()
+
         display_text = self._window.getDisplayText()
         text_to_include = display_text + button_text
         self._window.setDisplayText(text_to_include)
@@ -114,6 +125,9 @@ class Controller:
                 button_widget.clicked.connect(partial(self.buildingText, button_name))
             if button_name == "CE":
                 button_widget.clicked.connect(self._window.clearDisplay)
+            if button_name == "=":
+                button_widget.clicked.connect(self._window.evaluateExpression)
+        self._window.display.returnPressed.connect(self._window.evaluateExpression)
 
 
 def main():
